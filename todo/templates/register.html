@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>To do app</title>
+    <style>
+        #head{
+            background-color:#1B5E20; 
+            color: #ffffff;
+            padding: 5px;
+            text-align: center;
+        }
+        .input{
+            padding: 10px;
+            margin:10px;
+            width: 300px;
+        }
+        #register{
+
+            margin-left: 30%; 
+            margin-right: 30%; 
+            margin-top: 100px; 
+            text-align: center;
+            background-color: #A5D6A7;
+            min-width: 400px;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        input[type='submit']{
+            background-color: #006064;
+            border:0px;
+            font-size: 15px;
+            color:#ffffff;
+            border-radius: 10px;
+        }
+        
+    </style>
+</head>
+<body bgcolor="#E8F5E9">
+    <div id='head'> 
+        <h1>To Do App</h1>
+        <a href="/todo/">
+            <img src="{% static 'home.png' %}" width="40" style="float: right; margin-top: -70px;">
+        </a>
+    </div>
+    <div id="register">
+       <form name="frm_register" action="/todo/register/" method="POST">
+        {% csrf_token %}
+            <input type="text" name="txt_name" class="input" placeholder="Full name" required><br>
+            <input type="text" name="txt_username" class="input" placeholder="Username" required><br>
+            <input type="password" name="txt_password" class="input" placeholder="Password" required><br>
+            <label><b>Gender: </b> </label>
+            <input type="radio" name="gender"  required value="Male">Male 
+            <input type="radio" name="gender"  required value="Female">Female<br>
+            <input type="phonenumer" name="txt_phone" class="input" placeholder="Phone number" required><br>
+            <input type="date" name="txt_dob" class="input" required><br>
+            <input type="submit" value="REGISTER" class="input">
+       </form>
+       <p style="color:#1B5E20">{{success}}
+        {% if 'success'  in success %}
+            <a href="/todo/login">Click here to Login</a> 
+            {% endif %}
+    
+        </p>
+       <p style="color:#B71C1C">{{fail}}</p>
+    </div>
+    <hr>
+    <p align="center">
+        <b>Developed by:</b> <i>Cybersquare</i>
+    </p>
+</body>
+</html>
