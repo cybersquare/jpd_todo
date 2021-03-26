@@ -9,6 +9,8 @@ def home(request):
 
 
 def login(request):
+    'User login'
+    # Get values from the POST request
     if request.method == 'POST':
         username = request.POST.get('txt_username')
         password = request.POST.get("txt_password")
@@ -18,22 +20,20 @@ def login(request):
         val = (username, password)
         cursor.execute(sql, val)
         record = cursor.fetchall()
-        print(record)
         if record: # Login success
             request.session['user'] = record[0][3]
             request.session['user_id'] = record[0][0]
-            print(record[0][3])
             # return render(request, 'todo.html', {'user':request.session['user']})
             return redirect('/todo/todo')
         else: # Login fail
             return render(request, 'login.html', {'message':'Invalid username or password'})
-
-
     else:
         return render(request, 'login.html')
 
 
 def register(request):
+    'new user registration'
+    # Get values from the post request
     if request.method == 'POST':
         username = request.POST.get('txt_username')
         password = request.POST.get("txt_password")
@@ -56,14 +56,15 @@ def register(request):
             else:
                 fail = "Regisration failed"
             return render(request, 'register.html', {'success': success, 'fail':fail})
-        except:
-            return render(request, 'register.html', {'fail':'Registration failed'})
+        except Exception as e:
+            return render(request, 'register.html', {'fail':str(e)})
 
     else:
         return render(request, 'register.html')
 
 
 def todo(request):
+    'Show todos'
     # Redirect to home page if not logged in 
     if not request.session.get('user'):
         return redirect('/todo/login/')
@@ -76,11 +77,11 @@ def todo(request):
     cursor = connection.cursor()
     cursor.execute(sql, val)
     records = cursor.fetchall()
-    print(records)
     return render(request, 'todo.html', {'user': user, 'todos':records})
 
 
 def save(request):
+    'Save to do'
     # Get values from the request
     title = request.POST.get('txt_title')
     content = request.POST.get("txt_description")
@@ -97,7 +98,6 @@ def save(request):
 def delete(request):
     'Delete to do from database on clicking delete button'
     id = request.GET.get('id')
-    print(id)
     cursor = connection.cursor()
     sql = "delete from todos where todo_id=%s"
     val = (str(id))

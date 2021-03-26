@@ -1,5 +1,6 @@
 from . import views
-from django.urls import path, include
+from . import views_api
+from django.urls import path
 
 urlpatterns = [
     path('',views.home),
@@ -9,4 +10,8 @@ urlpatterns = [
     path('save/',views.save),
     path('delete',views.delete),
     path('logout',views.logout),
+
+    path('api_home/', views_api.home),
+    path('api_login/', views_api.login),
+
 ]
