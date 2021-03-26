@@ -30,7 +30,7 @@ def login(request):
         if record: # Login success
             request.session['user'] = record[0][3]
             request.session['user_id'] = record[0][0]
-            return Response(json.dumps("login succcess"))
+            return Response("login succcess")
         else: # Login fail
             return Response("login fail")
     else:
