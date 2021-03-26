@@ -9,7 +9,7 @@ from django.db import connection
 def home(request):
     print ("hello")
     # return HttpResponse("hello")
-    return Response(json.dumps("hello"))
+    return Response("hello")
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -32,6 +32,6 @@ def login(request):
             request.session['user_id'] = record[0][0]
             return Response(json.dumps("login succcess"))
         else: # Login fail
-            return Response(json.dumps("login fail"))
+            return Response("login fail")
     else:
-        return Response(json.dumps("hello"))
+        return Response("hello")
