@@ -20,7 +20,6 @@ def login(request):
         data = request.data
         username = data['txt_username']
         password = data["txt_password"]
-        print(username, password)
         cursor = connection.cursor()
         
         sql = "select * from users where username=%s and password=%s"
@@ -30,8 +29,8 @@ def login(request):
         if record: # Login success
             request.session['user'] = record[0][3]
             request.session['user_id'] = record[0][0]
-            return Response("login succcess")
+            return Response(json.dumps({"result":"login success"}))
         else: # Login fail
-            return Response("login fail")
+            return Response("login failed")
     else:
         return Response("hello")
