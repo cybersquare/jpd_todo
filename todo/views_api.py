@@ -131,7 +131,7 @@ def delete(request):
 def get_todo(username):
     'Show todos'
     # Show todos stored in database
-    sql = "select title, content from todos t \
+    sql = "select todo_id, title, content from todos t \
            join users u on  t.user_id = u.user_id \
            where u.username=%s "
     val=[username]
