@@ -44,12 +44,12 @@ def register(request):
     # Get values from the post request
     if request.method == 'POST':
         data = request.data
-        username = data('username')
-        password = data("password")
-        name = data("name")
-        gender = data("gender")
-        phone = data("phone")
-        dob = data("dob")
+        username = data['username']
+        password = data["password"]
+        name = data["name"]
+        gender = data["gender"]
+        phone = data["phone"]
+        dob = data["dob"]
 
         try:
             cursor = connection.cursor()
