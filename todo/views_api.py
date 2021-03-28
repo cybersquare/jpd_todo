@@ -4,6 +4,7 @@ from rest_framework.response import Response
 import json
 from django.db import connection
 
+
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def home(request):
@@ -18,8 +19,8 @@ def login(request):
     # Get values from the POST request
     if request.method == 'POST':
         data = request.data
-        username = data['txt_username']
-        password = data["txt_password"]
+        username = data['username']
+        password = data["password"]
         cursor = connection.cursor()
         
         sql = "select * from users where username=%s and password=%s"
@@ -34,3 +35,107 @@ def login(request):
             return Response("login failed")
     else:
         return Response("hello")
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def register(request):
+    'new user registration'
+    # Get values from the post request
+    if request.method == 'POST':
+        data = request.data
+        username = data('username')
+        password = data("password")
+        name = data("name")
+        gender = data("gender")
+        phone = data("phone")
+        dob = data("dob")
+
+        try:
+            cursor = connection.cursor()
+            sql = "insert into users values(null, %s, %s, %s, %s, %s, %s )"
+            val = (username, password, name, gender, phone, dob )
+            cursor.execute(sql, val)
+            result = ""
+
+            id = cursor.lastrowid
+            if id:
+                result = "Registration success"
+            else:
+                result = "Regisration failed"
+            return Response(json.dumps({"result":result}))
+        except Exception as e:
+            return Response(json.dumps({"result":str(e)}))
+
+    else:
+        return Response("Register")
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def todo(request):
+    'Show todos'
+    records = ""
+    if request.method == 'POST':
+        data = request.data
+        username = data['username']
+        records = get_todo(username)
+    return Response(json.dumps(records))
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def save(request):
+    'Save to do'
+    # Get values from the request
+    username = ""
+    if request.method == 'POST':
+        data = request.data
+        username = data['username']
+        title = data['title']
+        content = data["description"]
+        #  Get user id from users table 
+        cursor = connection.cursor()
+        sql = "select user_id from users where username = %s"
+        val = [username]
+        cursor.execute(sql, val)
+        recrods = cursor.fetchall()
+        user_id = recrods[0][0]
+        #  Save todo too database
+        sql = "insert into todos values(null, %s, %s, %s )"
+        val = (title, content, str(user_id) )
+        cursor.execute(sql, val)
+    records = get_todo(username)
+    return Response(json.dumps(records))
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def delete(request):
+    'Delete to do from database on clicking delete button'
+    username = ""
+    if request.method == 'POST':
+        data = request.data
+        username = data['username']
+        todo_id = data['todo_id']
+        #  Delete todo 
+        sql = "delete from todos where todo_id=%s"
+        val = (todo_id)
+        cursor = connection.cursor()
+        cursor.execute(sql, val)
+    records = get_todo(username)
+    return Response(json.dumps(records))
+
+
+
+def get_todo(username):
+    'Show todos'
+    # Show todos stored in database
+    sql = "select title, content from todos t \
+           join users u on  t.user_id = u.user_id \
+           where u.username=%s "
+    val=[username]
+    cursor = connection.cursor()
+    cursor.execute(sql, val)
+    records = cursor.fetchall()
+    return records
