@@ -117,10 +117,10 @@ def delete(request):
     if request.method == 'POST':
         data = request.data
         username = data['username']
-        todo_id = data['todo_id']
+        id_todo = data['todo_id']
         #  Delete todo 
         sql = "delete from todos where todo_id=%s"
-        val = [str(todo_id)]
+        val = [str(id_todo)]
         cursor = connection.cursor()
         cursor.execute(sql, val)
     records = get_todo(username)
