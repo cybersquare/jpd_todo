@@ -120,7 +120,7 @@ def delete(request):
         todo_id = data['todo_id']
         #  Delete todo 
         sql = "delete from todos where todo_id=%s"
-        val = [str(todo_id]
+        val = [str(todo_id)]
         cursor = connection.cursor()
         cursor.execute(sql, val)
     records = get_todo(username)
