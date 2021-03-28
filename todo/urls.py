@@ -16,6 +16,6 @@ urlpatterns = [
     path('api_register/',views_api.register),
     path('api_todo/',views_api.todo),
     path('api_save/',views_api.save),
-    path('api_delete',views_api.delete),
+    path('api_delete/',views_api.delete),
 
 ]
