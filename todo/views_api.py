@@ -116,6 +116,7 @@ def delete(request):
     username = ""
     if request.method == 'POST':
         data = request.data
+        username = data['username']
         todo_id = data['todo_id']
         #  Delete todo 
         sql = "delete from todos where todo_id=%s"
