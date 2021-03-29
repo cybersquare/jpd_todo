@@ -103,7 +103,7 @@ def save(request):
         user_id = recrods[0][0]
         #  Save todo too database
         sql = "insert into todos values(null, %s, %s, %s )"
-        val = (title, content, str(user_id) )
+        val = [title, content, str(user_id) ]
         cursor.execute(sql, val)
     records = get_todo(username)
     return Response(json.dumps(records))
